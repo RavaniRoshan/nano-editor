@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Image Editor - Vanilla JS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎨 Gemini Image Editor</h1>
+            <p>Transform your images with AI-powered editing using Google's Gemini 2.5 Flash</p>
+        </header>
+
+        <!-- API Key Configuration Section -->
+        <section class="api-config-section" id="apiConfigSection">
+            <div class="config-card">
+                <h3>🔑 API Key Configuration</h3>
+                <p>Enter your Gemini API key to start editing images</p>
+                <div class="api-key-input-container">
+                    <input 
+                        type="password" 
+                        id="apiKeyInput" 
+                        placeholder="Enter your Gemini API key..."
+                        class="api-key-input"
+                    >
+                    <button id="saveApiKey" class="save-btn">Save Key</button>
+                    <button id="toggleApiKey" class="toggle-btn" title="Show/Hide API Key">👁️</button>
+                </div>
+                <div class="api-status" id="apiStatus"></div>
+                <details class="help-section">
+                    <summary>📖 How to get your API key</summary>
+                    <ol>
+                        <li>Visit <a href="https://ai.google.dev/" target="_blank">Google AI Studio</a></li>
+                        <li>Sign in with your Google account</li>
+                        <li>Navigate to "Get API Key" section</li>
+                        <li>Create a new API key or use an existing one</li>
+                        <li>Copy the key and paste it above</li>
+                    </ol>
+                    <p><strong>Note:</strong> Your API key is stored locally in your browser and never sent to any server except Google's Gemini API.</p>
+                </details>
+            </div>
+        </section>
+
+        <!-- Main Application Section -->
+        <section class="main-app" id="mainApp" style="display: none;">
+            <!-- Image Upload Section -->
+            <div class="upload-section">
+                <div class="drag-drop-area" id="dragDropArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <h3>Drag & Drop Your Image Here</h3>
+                        <p>Or click to select an image file</p>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                        <button class="browse-btn" id="browseBtn">Browse Files</button>
+                    </div>
+                </div>
+                
+                <!-- Image Preview -->
+                <div class="image-preview" id="imagePreview" style="display: none;">
+                    <img id="previewImage" alt="Selected image">
+                    <button class="remove-btn" id="removeImage">✕</button>
+                </div>
+            </div>
+
+            <!-- Form Section -->
+            <div class="form-section">
+                <div class="form-card">
+                    <h3>✨ Image Editing Options</h3>
+                    
+                    <!-- Main Prompt -->
+                    <div class="form-group">
+                        <label for="promptInput">Editing Prompt *</label>
+                        <textarea 
+                            id="promptInput" 
+                            placeholder="Describe how you want to modify the image... (e.g., 'Add a beautiful sunset in the background', 'Change the color to blue', 'Remove the person from the image')"
+                            rows="3"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- Optional YouTube Title -->
+                    <div class="form-group">
+                        <label for="youtubeTitle">YouTube Title (Optional)</label>
+                        <input 
+                            type="text" 
+                            id="youtubeTitle" 
+                            placeholder="Enter YouTube video title to incorporate into the image..."
+                        >
+                    </div>
+
+                    <!-- Text Style Dropdown -->
+                    <div class="form-group">
+                        <label for="textStyle">Text Style (Optional)</label>
+                        <select id="textStyle">
+                            <option value="">No specific style</option>
+                            <option value="3D metallic">3D Metallic</option>
+                            <option value="balloon">Balloon</option>
+                            <option value="Matrix">Matrix</option>
+                        </select>
+                    </div>
+
+                    <!-- Number of Images -->
+                    <div class="form-group">
+                        <label for="numberOfImages">Number of Images</label>
+                        <select id="numberOfImages">
+                            <option value="1">1 Image</option>
+                            <option value="2">2 Images</option>
+                            <option value="3">3 Images</option>
+                            <option value="4">4 Images</option>
+                        </select>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button id="editImageBtn" class="edit-btn" disabled>
+                            <span class="btn-text">✨ Edit Image</span>
+                            <span class="btn-loader" style="display: none;">🔄 Processing...</span>
+                        </button>
+                        <button id="resetForm" class="reset-btn">🔄 Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-card">
+                    <h3>🎯 Generated Images</h3>
+                    <div class="results-grid" id="resultsGrid"></div>
+                    <div class="results-actions">
+                        <button id="downloadAll" class="download-btn">📥 Download All</button>
+                        <button id="clearResults" class="clear-btn">🗑️ Clear Results</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <h3>Processing your image...</h3>
+                <p>This may take a few moments</p>
+            </div>
+        </div>
+
+        <!-- Error Toast -->
+        <div class="error-toast" id="errorToast" style="display: none;">
+            <span class="error-message"></span>
+            <button class="close-toast">✕</button>
+        </div>
+
+        <!-- Success Toast -->
+        <div class="success-toast" id="successToast" style="display: none;">
+            <span class="success-message"></span>
+            <button class="close-toast">✕</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Powered by Google Gemini 2.5 Flash API | Built with Vanilla JavaScript</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
