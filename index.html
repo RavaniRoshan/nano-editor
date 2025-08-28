@@ -3,11 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Image Editor - Vanilla JS</title>
+    <title>Gemini Image Editor - AI-Powered Image Transformation</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="landing-style.css">
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <!-- Landing Page Section -->
+    <div id="landingPage" class="page-section">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <span class="logo-icon">🎨</span>
+                    <span class="logo-text">Gemini Image Editor</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                    <a href="#examples" class="nav-link">Examples</a>
+                    <button id="launchAppBtn" class="nav-cta">Launch App</button>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="title-line">Transform Your Images</span>
+                        <span class="title-line">with AI Magic</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Experience the power of Google's Gemini 2.5 Flash API to edit, enhance, and reimagine your images with simple text prompts. No complex software needed.
+                    </p>
+                    <div class="hero-actions">
+                        <button id="startCreatingBtn" class="btn btn-primary">
+                            <span class="btn-text">Start Creating</span>
+                            <span class="btn-icon">✨</span>
+                        </button>
+                        <button class="btn btn-secondary" id="watchDemo">
+                            <span class="btn-text">Watch Demo</span>
+                            <span class="btn-icon">▶️</span>
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="10000">0</span>
+                            <span class="stat-label">Images Transformed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="500">0</span>
+                            <span class="stat-label">Happy Users</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="99">0</span>
+                            <span class="stat-label">Success Rate %</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-cards">
+                        <div class="card card-1">
+                            <div class="card-content">
+                                <div class="card-icon">🌅</div>
+                                <div class="card-text">Add Sunset</div>
+                            </div>
+                        </div>
+                        <div class="card card-2">
+                            <div class="card-content">
+                                <div class="card-icon">🎭</div>
+                                <div class="card-text">Change Style</div>
+                            </div>
+                        </div>
+                        <div class="card card-3">
+                            <div class="card-content">
+                                <div class="card-icon">🌈</div>
+                                <div class="card-text">Adjust Colors</div>
+                            </div>
+                        </div>
+                        <div class="card card-4">
+                            <div class="card-content">
+                                <div class="card-icon">✨</div>
+                                <div class="card-text">Add Effects</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-image-container">
+                        <div class="image-placeholder">
+                            <div class="image-grid">
+                                <div class="grid-item"></div>
+                                <div class="grid-item"></div>
+                                <div class="grid-item"></div>
+                                <div class="grid-item"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Animated Background Elements -->
+            <div class="hero-bg-elements">
+                <div class="bg-circle bg-circle-1"></div>
+                <div class="bg-circle bg-circle-2"></div>
+                <div class="bg-circle bg-circle-3"></div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Powerful Features</h2>
+                    <p class="section-subtitle">Everything you need to transform your images with AI</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">Smart AI Processing</h3>
+                        <p class="feature-description">
+                            Powered by Google's Gemini 2.5 Flash API for intelligent image understanding and modification
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3 class="feature-title">Natural Language Prompts</h3>
+                        <p class="feature-description">
+                            Simply describe what you want - "add a sunset", "make it brighter", "change the background"
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Lightning Fast</h3>
+                        <p class="feature-description">
+                            Get your edited images in seconds, no waiting for complex processing or uploads
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3 class="feature-title">Responsive Design</h3>
+                        <p class="feature-description">
+                            Works perfectly on desktop, tablet, and mobile devices with intuitive drag-and-drop interface
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3 class="feature-title">Privacy Focused</h3>
+                        <p class="feature-description">
+                            Your images are processed securely, API keys stored locally, no data collection
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <h3 class="feature-title">No Installation</h3>
+                        <p class="feature-description">
+                            Runs entirely in your browser, no software downloads or complex setup required
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">How It Works</h2>
+                    <p class="section-subtitle">Transform your images in just three simple steps</p>
+                </div>
+                
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Upload Your Image</h3>
+                            <p class="step-description">
+                                Simply drag and drop your image or click to browse. Supports all common formats including JPEG, PNG, and WebP.
+                            </p>
+                        </div>
+                        <div class="step-visual">
+                            <div class="upload-animation">
+                                <div class="upload-icon">📁</div>
+                                <div class="upload-arrow">↗️</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Describe Your Vision</h3>
+                            <p class="step-description">
+                                Tell the AI what you want in plain English. Add YouTube titles, choose text styles, or describe any modification you can imagine.
+                            </p>
+                        </div>
+                        <div class="step-visual">
+                            <div class="text-animation">
+                                <div class="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <div class="text-bubble">Make it magical ✨</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Download & Share</h3>
+                            <p class="step-description">
+                                Get your transformed images instantly. Generate multiple variations and download them individually or all at once.
+                            </p>
+                        </div>
+                        <div class="step-visual">
+                            <div class="download-animation">
+                                <div class="result-grid">
+                                    <div class="result-item"></div>
+                                    <div class="result-item"></div>
+                                    <div class="result-item"></div>
+                                    <div class="result-item"></div>
+                                </div>
+                                <div class="download-icon">⬇️</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section class="examples" id="examples">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">See It In Action</h2>
+                    <p class="section-subtitle">Real examples of AI-powered image transformations</p>
+                </div>
+                
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <div class="example-image">
+                            <div class="image-placeholder">
+                                <span class="placeholder-text">Original</span>
+                            </div>
+                        </div>
+                        <div class="example-arrow">→</div>
+                        <div class="example-image">
+                            <div class="image-placeholder modified">
+                                <span class="placeholder-text">Enhanced</span>
+                            </div>
+                        </div>
+                        <div class="example-prompt">"Add a beautiful sunset sky"</div>
+                    </div>
+                    
+                    <div class="example-card">
+                        <div class="example-image">
+                            <div class="image-placeholder">
+                                <span class="placeholder-text">Portrait</span>
+                            </div>
+                        </div>
+                        <div class="example-arrow">→</div>
+                        <div class="example-image">
+                            <div class="image-placeholder modified">
+                                <span class="placeholder-text">Stylized</span>
+                            </div>
+                        </div>
+                        <div class="example-prompt">"Apply artistic painting style"</div>
+                    </div>
+                    
+                    <div class="example-card">
+                        <div class="example-image">
+                            <div class="image-placeholder">
+                                <span class="placeholder-text">Product</span>
+                            </div>
+                        </div>
+                        <div class="example-arrow">→</div>
+                        <div class="example-image">
+                            <div class="image-placeholder modified">
+                                <span class="placeholder-text">Branded</span>
+                            </div>
+                        </div>
+                        <div class="example-prompt">"Add YouTube title with 3D metallic text"</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Transform Your Images?</h2>
+                    <p class="cta-subtitle">
+                        Join thousands of creators using AI to bring their visual ideas to life
+                    </p>
+                    <div class="cta-actions">
+                        <button id="startCreatingCTABtn" class="btn btn-primary btn-large">
+                            <span class="btn-text">Start Creating Now</span>
+                            <span class="btn-icon">🚀</span>
+                        </button>
+                    </div>
+                    <div class="cta-note">
+                        <span class="note-icon">🔑</span>
+                        <span class="note-text">Free to try - just bring your Gemini API key</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Animated Background -->
+            <div class="cta-bg">
+                <div class="floating-element element-1">✨</div>
+                <div class="floating-element element-2">🎨</div>
+                <div class="floating-element element-3">🌟</div>
+                <div class="floating-element element-4">💫</div>
+                <div class="floating-element element-5">⭐</div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <span class="logo-icon">🎨</span>
+                            <span class="logo-text">Gemini Image Editor</span>
+                        </div>
+                        <p class="footer-description">
+                            AI-powered image editing made simple and accessible for everyone.
+                        </p>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <div class="footer-section">
+                            <h4 class="footer-title">Product</h4>
+                            <ul class="footer-list">
+                                <li><a href="#features">Features</a></li>
+                                <li><a href="#how-it-works">How It Works</a></li>
+                                <li><a href="#examples">Examples</a></li>
+                                <li><button id="launchAppFooterBtn" class="footer-link-btn">Launch App</button></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="footer-section">
+                            <h4 class="footer-title">Resources</h4>
+                            <ul class="footer-list">
+                                <li><a href="README.md">Documentation</a></li>
+                                <li><a href="config-template.md">Setup Guide</a></li>
+                                <li><a href="https://ai.google.dev/">Get API Key</a></li>
+                                <li><a href="https://github.com/">Source Code</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="footer-section">
+                            <h4 class="footer-title">Technology</h4>
+                            <ul class="footer-list">
+                                <li><a href="https://gsap.com/">GSAP Animations</a></li>
+                                <li><a href="https://ai.google.dev/">Gemini API</a></li>
+                                <li><span>Vanilla JavaScript</span></li>
+                                <li><span>Client-Side Only</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p class="footer-copyright">
+                        © 2024 Gemini Image Editor. Built with ❤️ using Vanilla JavaScript and GSAP.
+                    </p>
+                    <div class="footer-tech">
+                        <span class="tech-badge">Vanilla JS</span>
+                        <span class="tech-badge">GSAP</span>
+                        <span class="tech-badge">Gemini API</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- App Section -->
+    <div id="appPage" class="page-section" style="display: none;">
+        <div class="container">
         <!-- Header -->
         <header class="header">
             <h1>🎨 Gemini Image Editor</h1>
@@ -156,15 +548,16 @@
         <div class="success-toast" id="successToast" style="display: none;">
             <span class="success-message"></span>
             <button class="close-toast">✕</button>
+            <!-- Footer -->
+            <footer class="app-footer">
+                <p>Powered by Google Gemini 2.5 Flash API | Built with Vanilla JavaScript</p>
+                <button id="backToLandingBtn" class="back-btn">← Back to Landing</button>
+            </footer>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>Powered by Google Gemini 2.5 Flash API | Built with Vanilla JavaScript</p>
-    </footer>
-
     <!-- Scripts -->
+    <script src="landing-script.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

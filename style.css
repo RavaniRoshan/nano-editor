@@ -13,10 +13,58 @@ body {
     min-height: 100vh;
 }
 
-.container {
+/* Page Section Routing Styles */
+.page-section {
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Landing page styles are handled by landing-style.css */
+#landingPage {
+    /* Landing page specific overrides if needed */
+}
+
+/* App page specific styles */
+#appPage {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+#appPage .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+}
+
+/* App Footer Styles */
+.app-footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    color: white;
+    opacity: 0.8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
 }
 
 /* Header Styles */
@@ -558,9 +606,26 @@ body {
     opacity: 0.8;
 }
 
+/* Footer link button for navigation */
+.footer-link-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0;
+    font-size: inherit;
+}
+
+.footer-link-btn:hover {
+    color: #4f46e5;
+    text-decoration: underline;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
-    .container {
+    #appPage .container {
         padding: 10px;
     }
     
@@ -597,6 +662,11 @@ body {
     .results-grid {
         grid-template-columns: 1fr;
     }
+    
+    .app-footer {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -612,5 +682,10 @@ body {
     .form-group textarea,
     .form-group select {
         font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .back-btn {
+        width: 100%;
+        margin-top: 10px;
     }
 }

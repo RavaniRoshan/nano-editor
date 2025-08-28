@@ -3,6 +3,7 @@
  * This application allows users to edit images using Google's Gemini 2.5 Flash API
  * 
  * Features:
+ * - Landing page with routing functionality
  * - Drag and drop image upload
  * - API key configuration and secure local storage
  * - Integration with Gemini API for image editing
@@ -10,6 +11,289 @@
  * - Multiple image generation
  * - Image download functionality
  */
+
+/**
+ * Router class to handle navigation between pages
+ */
+class Router {
+    constructor() {
+        this.currentPage = 'landing';
+        this.pages = {
+            landing: document.getElementById('landingPage'),
+            app: document.getElementById('appPage')
+        };
+        
+        this.initializeRouting();
+    }
+    
+    /**
+     * Initialize routing functionality
+     */
+    initializeRouting() {
+        // Show landing page by default
+        this.showPage('landing');
+        
+        // Navigation event listeners
+        this.addNavigationListeners();
+        
+        // Handle browser back button
+        window.addEventListener('popstate', (e) => {
+            const page = e.state?.page || 'landing';
+            this.showPage(page, false);
+        });
+    }
+    
+    /**
+     * Add event listeners for navigation buttons
+     */
+    addNavigationListeners() {
+        // Landing page "Launch App" buttons
+        const launchButtons = [
+            document.getElementById('launchAppBtn'),
+            document.getElementById('startCreatingBtn'),
+            document.getElementById('startCreatingCTABtn'),
+            document.getElementById('launchAppFooterBtn')
+        ];
+        
+        launchButtons.forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.navigateToApp();
+                });
+            }
+        });
+        
+        // Back to landing button (added when app loads)
+        const backBtn = document.getElementById('backToLandingBtn');
+        if (backBtn) {
+            backBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToLanding();
+            });
+        }
+    }
+    
+    /**
+     * Navigate to app page
+     */
+    navigateToApp() {
+        this.showPage('app');
+        history.pushState({ page: 'app' }, 'Gemini Image Editor - App', '#app');
+    }
+    
+    /**
+     * Navigate to landing page
+     */
+    navigateToLanding() {
+        this.showPage('landing');
+        history.pushState({ page: 'landing' }, 'Gemini Image Editor', '#landing');
+    }
+    
+    /**
+     * Show specific page and hide others
+     */
+    showPage(pageName, updateHistory = true) {
+        // Hide all pages
+        Object.values(this.pages).forEach(page => {
+            if (page) page.style.display = 'none';
+        });
+        
+        // Show requested page
+        if (this.pages[pageName]) {
+            this.pages[pageName].style.display = 'block';
+            this.currentPage = pageName;
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Update page title
+            this.updatePageTitle(pageName);
+            
+            // Initialize page-specific functionality
+            this.initializePage(pageName);
+        }
+    }
+    
+    /**
+     * Update page title based on current page
+     */
+    updatePageTitle(pageName) {
+        const titles = {
+            landing: 'Gemini Image Editor - AI-Powered Image Transformation',
+            app: 'Gemini Image Editor - App'
+        };
+        
+        document.title = titles[pageName] || 'Gemini Image Editor';
+    }
+    
+    /**
+     * Initialize page-specific functionality
+     */
+    initializePage(pageName) {
+        if (pageName === 'landing') {
+            // Initialize landing page animations if needed
+            this.initializeLandingAnimations();
+        } else if (pageName === 'app') {
+            // Initialize app functionality
+            this.initializeAppFunctionality();
+        }
+    }
+    
+    /**
+     * Initialize landing page animations
+     */
+    initializeLandingAnimations() {
+        // Check if GSAP is available and landing script is loaded
+        if (typeof gsap !== 'undefined') {
+            // Re-initialize GSAP animations for landing page
+            this.setupGSAPAnimations();
+        }
+    }
+    
+    /**
+     * Setup GSAP animations for landing page
+     */
+    setupGSAPAnimations() {
+        // Register GSAP plugins
+        if (typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+        }
+        if (typeof TextPlugin !== 'undefined') {
+            gsap.registerPlugin(TextPlugin);
+        }
+        
+        // Hero section animations
+        gsap.from('.hero-title .title-line', {
+            duration: 1,
+            y: 100,
+            opacity: 0,
+            stagger: 0.2,
+            ease: 'power3.out'
+        });
+        
+        gsap.from('.hero-subtitle', {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            delay: 0.5,
+            ease: 'power3.out'
+        });
+        
+        gsap.from('.hero-actions .btn', {
+            duration: 0.8,
+            y: 30,
+            opacity: 0,
+            stagger: 0.1,
+            delay: 0.8,
+            ease: 'back.out(1.7)'
+        });
+        
+        // Floating cards animation
+        gsap.from('.floating-cards .card', {
+            duration: 1.5,
+            y: 50,
+            rotation: 5,
+            opacity: 0,
+            stagger: 0.1,
+            delay: 1,
+            ease: 'elastic.out(1, 0.5)'
+        });
+        
+        // Stats counter animation
+        this.animateCounters();
+        
+        // Section animations on scroll
+        this.setupScrollAnimations();
+    }
+    
+    /**
+     * Animate counter numbers
+     */
+    animateCounters() {
+        const counters = document.querySelectorAll('.stat-number');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-count'));
+            gsap.to(counter, {
+                textContent: target,
+                duration: 2,
+                delay: 1.5,
+                ease: 'power2.out',
+                snap: { textContent: 1 },
+                onUpdate: function() {
+                    counter.textContent = Math.floor(counter.textContent).toLocaleString();
+                }
+            });
+        });
+    }
+    
+    /**
+     * Setup scroll-triggered animations
+     */
+    setupScrollAnimations() {
+        if (typeof ScrollTrigger === 'undefined') return;
+        
+        // Features section
+        gsap.from('.feature-card', {
+            scrollTrigger: {
+                trigger: '.features',
+                start: 'top 80%'
+            },
+            duration: 0.8,
+            y: 50,
+            opacity: 0,
+            stagger: 0.1,
+            ease: 'power3.out'
+        });
+        
+        // Steps section
+        gsap.from('.step', {
+            scrollTrigger: {
+                trigger: '.how-it-works',
+                start: 'top 80%'
+            },
+            duration: 1,
+            x: -50,
+            opacity: 0,
+            stagger: 0.2,
+            ease: 'power3.out'
+        });
+        
+        // Examples section
+        gsap.from('.example-card', {
+            scrollTrigger: {
+                trigger: '.examples',
+                start: 'top 80%'
+            },
+            duration: 0.8,
+            scale: 0.8,
+            opacity: 0,
+            stagger: 0.1,
+            ease: 'back.out(1.7)'
+        });
+    }
+    
+    /**
+     * Initialize app functionality
+     */
+    initializeAppFunctionality() {
+        // App functionality will be initialized by GeminiImageEditor class
+        // This is called when user navigates to app page
+    }
+    
+    /**
+     * Get current page
+     */
+    getCurrentPage() {
+        return this.currentPage;
+    }
+}
+
+// Initialize router first
+let router;
+document.addEventListener('DOMContentLoaded', () => {
+    router = new Router();
+});
 
 class GeminiImageEditor {
     constructor() {
@@ -19,14 +303,24 @@ class GeminiImageEditor {
         this.selectedImageFile = null;
         this.isProcessing = false;
         
-        // DOM Elements
-        this.initializeElements();
-        
-        // Event Listeners
-        this.initializeEventListeners();
-        
-        // Load saved API key
-        this.loadSavedApiKey();
+        // Check if we're in app context (DOM elements exist)
+        if (this.checkAppContext()) {
+            // DOM Elements
+            this.initializeElements();
+            
+            // Event Listeners
+            this.initializeEventListeners();
+            
+            // Load saved API key
+            this.loadSavedApiKey();
+        }
+    }
+    
+    /**
+     * Check if app context is available (required DOM elements exist)
+     */
+    checkAppContext() {
+        return document.getElementById('apiConfigSection') !== null;
     }
     
     /**
@@ -939,7 +1233,14 @@ class GeminiImageEditor {
 
 // Initialize the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.app = new GeminiImageEditor();
+    // Initialize router first
+    router = new Router();
+    
+    // Initialize app functionality when navigating to app page
+    // or if already on app page
+    setTimeout(() => {
+        window.app = new GeminiImageEditor();
+    }, 100);
 });
 
 // Global error handler
